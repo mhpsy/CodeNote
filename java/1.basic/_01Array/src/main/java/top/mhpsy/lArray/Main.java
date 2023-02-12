@@ -1,4 +1,4 @@
-package top.mhpsy;
+package top.mhpsy.lArray;
 
 public class Main {
     public static void main(String[] args) {

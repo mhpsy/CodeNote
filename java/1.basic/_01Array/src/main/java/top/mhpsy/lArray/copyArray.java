@@ -1,4 +1,4 @@
-package top.mhpsy;
+package top.mhpsy.lArray;
 
 import java.util.Arrays;
 
