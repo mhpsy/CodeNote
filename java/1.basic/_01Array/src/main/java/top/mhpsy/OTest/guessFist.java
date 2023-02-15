@@ -55,12 +55,16 @@ class Game {
     public String getResult() {
         if (this.computer.random == this.player.guess) {
             return "平局";
-        } else if (this.computer.random == 1 && this.player.guess == 2) {
-            return "你赢了";
-        } else if (this.computer.random == 2 && this.player.guess == 3) {
-            return "你赢了";
-        } else if (this.computer.random == 3 && this.player.guess == 1) {
-            return "你赢了";
+        } else {
+            int random = this.computer.random;
+            int guess = this.player.guess;
+            if (random == 1 && guess == 2) {
+                return "你赢了";
+            } else if (random == 2 && guess == 3) {
+                return "你赢了";
+            } else if (random == 3 && guess == 1) {
+                return "你赢了";
+            }
         }
         return "你输了";
     }
@@ -71,18 +75,16 @@ class Computer {
     int random;
 
     //生成随机数1~3
-    public int random() {
+    public void random() {
         this.random = (int) (Math.random() * 3);
-        return this.random;
     }
 }
 
 class Player {
     int guess;
 
-    public int guess() {
+    public void guess() {
         System.out.println("请输入你的猜拳结果：1.剪刀 2.石头 3.布");
         this.guess = new Scanner(System.in).nextInt();
-        return this.guess;
     }
 }
