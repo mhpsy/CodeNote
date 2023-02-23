@@ -405,7 +405,21 @@ public class enumUse {
 }
 ```
 
+## 注解
+三个基本的注解：@Override、@Deprecated、@SuppressWarnings
+1. @Override：检测被该注解标注的方法是否是继承自父类(接口)的，只能用于方法
+2. @Deprecated：表示已过时
+3. @SuppressWarnings：抑制编译器警告
 
+```java
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.SOURCE)
+public @interface Override {
+}
+```
+
+> 上面就是override的源码，可以看到它是一个接口，而且它的注解类型是METHOD，表示只能用于方法上，
+> 而且它的注解保留策略是SOURCE，表示只在源码阶段保留，编译成class文件后就会被抛弃。
 
 
 
