@@ -179,13 +179,15 @@ public class Test {
 4. **编译类型看定义时 = 号左边，运行类型看 = 号右边**
 
 ### 向上转型
+
 1. 本质：父类的引用指向子类的对象
 2. 语法：父类类型 变量名 = new 子类类型();
 3. 特点：编译类型看左边，运行类型看右边
 4. 可以调用父类中的所有”东西“
-5. 不能调用子类中特有的”东西“ 
+5. 不能调用子类中特有的”东西“
 
 ### 向下转型
+
 1. 本质：子类的引用指向父类的对象
 2. 语法：子类类型 变量名 = (子类类型) 父类类型的变量名;
 3. 只能强转父类的引用，不能强转父类的类型
@@ -193,9 +195,114 @@ public class Test {
 5. 向下转型之后，可以调用子类中的所有”东西“
 
 ### instanceof
+
 instance of 是一个二元操作符，左边是一个对象，右边是一个类，如果左边的对象是右边的类的实例，那么返回true，否则返回false
 。具体是在判断对象的运行类型是不是XX类型或XX的子类型。
 
-315
+## 代码块
 
-321
+1. 普通代码块： 类中方法的方法体
+2. 构造代码块： 构造块会在创建对象时被调用，每次创建时都会被调用，优先于类构造函数执行。
+3. 静态代码块： 用static{}包裹起来的代码片段，只会执行一次。静态代码块优先于构造块执行。
+4. 同步代码块： 使用synchronized（）{}包裹起来的代码块，在多线程环境下，对共享数据的读写操作是需要互斥进行的，否则会导致数据的不一致性。同步代码块需要写在方法中。
+
+### 静态代码块和构造代码块的异同点
+相同点：都是JVM加载类后且在构造函数执行之前执行，在类中可定义多个， 一般在代码块中对一些static变量进行赋值。 
+不同点：静态代码块在非静态代码块之前执行。静态代码块只在第一次new时执行一次，之后不在执行。而非静态代码块每new一次就执行一次。
+
+## 抽象类
+
+```java
+abstract class 类名 {
+    // 抽象方法
+    public abstract void method();
+}
+```
+
+### 抽象类的特点
+
+1. 抽象类不能被实例化
+2. 抽象类中可以有构造方法，但是不能被实例化
+3. 抽象类中可以有非抽象方法
+4. 抽象类中可以有抽象方法
+5. 抽象类中的抽象方法必须被子类重写
+
+### 抽象类的作用
+
+1. 抽象类可以被继承，子类可以重写抽象类中的方法
+2. 抽象类可以被继承，子类可以继承抽象类中的非抽象方法
+
+## 接口
+
+```java
+interface 接口名 {
+    // 常量
+    public static final int NUM = 10;
+
+    // 抽象方法
+    public abstract void method();
+}
+```
+
+> 类似于usb接口，鼠标，键盘，摄像头都可以插在usb接口上，但是鼠标，键盘，摄像头的功能不一样，所以鼠标，键盘，摄像头都要实现usb接口
+
+### 接口的特点
+
+1. 接口不能被实例化
+2. 接口中可以有常量，但是必须是public static final的
+3. 接口中可以有抽象方法，但是必须是public abstract的
+4. 接口中可以有非抽象方法，但是必须是public static final的
+
+## 匿名内部类
+
+```java
+new 类名或接口名(){
+// 重写方法
+public void method(){
+        // 方法体
+        }
+        }
+```
+
+### 匿名内部类的特点
+
+1. 匿名内部类必须继承一个类或者实现一个接口
+2. 匿名内部类不能有构造方法
+3. 匿名内部类不能有静态代码块和静态方法
+4. 匿名内部类不能有访问修饰符(public, private, protected)
+
+```java
+Animal Anonymous=new Animal(){
+    @Override
+    public void eat(){
+        System.out.println("eat");
+    }
+};
+    Anonymous.eat();
+    System.out.println(Anonymous.getClass());
+    System.out.println(Anonymous.getClass().getName());
+    //class top.mhpsy.anonymousInnerClass.anonymousInner1$1
+    //top.mhpsy.anonymousInnerClass.anonymousInner1$1
+interface Animal {
+    public void eat();
+}
+```
+
+## 内部类
+> 没什么好说的，就是一个类里面套一个类，这个类可以访问外部类的东西
+
+### 成员内部类
+
+```java
+class Outer {
+    private int num = 10;
+
+    class Inner {
+        public void show() {
+            System.out.println(num);
+        }
+    }
+}
+```
+
+
