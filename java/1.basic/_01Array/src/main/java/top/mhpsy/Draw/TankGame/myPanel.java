@@ -6,38 +6,41 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Vector;
 
-public class myPanel extends JPanel implements KeyListener {
+public class myPanel extends JPanel implements KeyListener, Runnable {
     Hero hero = null;
     Vector<EnemyTank> enemyTanks = new Vector<>();
     int enemySize = 3;
 
+    int clientWidth = 800;
+    int clientHeight = 500;
+
     public myPanel() {
         // 初始化自己的坦克
         hero = new Hero(100, 100, 0);
+        hero.setSpeed(10);
+        // 初始化子弹的失效范围
+        Shot.clientHeight = clientHeight;
+        Shot.clientWidth = clientWidth;
+
         // 初始化敌人的坦克
         for (int i = 0; i < enemySize; i++) {
             enemyTanks.add(new EnemyTank((i + 1) * 100, 0, 2));
         }
     }
 
-    public static void main(String[] args) {
-        myPanel myPanel = new myPanel();
-        JFrame jFrame = new JFrame();
-
-//        Hero hero = new Hero(100, 100, 0);
-
-        jFrame.add(myPanel);
-        jFrame.setSize(1000, 750);
-        jFrame.addKeyListener(myPanel);
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jFrame.setVisible(true);
-    }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
 //        drawTank(hero.getX(), hero.getY(), g, 0, 0);
-        drawTank(hero.getX() + 100, hero.getY() + 100, g, hero.getDirect(), 0);
+        drawTank(hero.getX(), hero.getY(), g, hero.getDirect(), 0);
+
+        // 画出子弹
+        if (hero.shot != null && hero.shot.isLive()) {
+//            System.out.println("子弹的坐标为：" + hero.shot.getX() + "," + hero.shot.getY());
+            g.setColor(Color.red);
+            g.fill3DRect(hero.shot.getX(), hero.shot.getY(), 1, 1, false);
+        }
 
         for (EnemyTank enemyTank : enemyTanks) {// 画出敌人坦克
             drawTank(enemyTank.getX(), enemyTank.getY(), g, enemyTank.getDirect(), 1);
@@ -61,32 +64,32 @@ public class myPanel extends JPanel implements KeyListener {
 
         switch (direct) {// 0:上 1:右 2:下 3:左
             case 0 -> {
-                g.fill3DRect(x, y, 5, 30, false);// 画出坦克左边轮子
-                g.fill3DRect(x + 15, y, 5, 30, false);// 画出坦克右边轮子
-                g.fill3DRect(x + 5, y + 5, 10, 20, false);// 画出坦克中间矩形
-                g.fillOval(x + 5, y + 10, 10, 10);// 画出坦克中间圆形
-                g.drawLine(x + 10, y + 15, x + 10, y);// 画出坦克中间线条
+                g.fill3DRect(x, y, 10, 60, false);
+                g.fill3DRect(x + 30, y, 10, 60, false);
+                g.fill3DRect(x + 10, y + 10, 20, 40, false);
+                g.fillOval(x + 10, y + 20, 20, 20);
+                g.drawLine(x + 20, y + 30, x + 20, y);
             }
             case 1 -> {
-                g.fill3DRect(x, y, 30, 5, false);// 画出坦克左边轮子
-                g.fill3DRect(x, y + 15, 30, 5, false);// 画出坦克右边轮子
-                g.fill3DRect(x + 5, y + 5, 20, 10, false);// 画出坦克中间矩形
-                g.fillOval(x + 10, y + 5, 10, 10);// 画出坦克中间圆形
-                g.drawLine(x + 15, y + 10, x + 30, y + 10);// 画出坦克中间线条
+                g.fill3DRect(x, y, 60, 10, false);
+                g.fill3DRect(x, y + 30, 60, 10, false);
+                g.fill3DRect(x + 10, y + 10, 40, 20, false);
+                g.fillOval(x + 20, y + 10, 20, 20);
+                g.drawLine(x + 30, y + 20, x + 60, y + 20);
             }
             case 2 -> {
-                g.fill3DRect(x, y, 5, 30, false);// 画出坦克左边轮子
-                g.fill3DRect(x + 15, y, 5, 30, false);// 画出坦克右边轮子
-                g.fill3DRect(x + 5, y + 5, 10, 20, false);// 画出坦克中间矩形
-                g.fillOval(x + 5, y + 10, 10, 10);// 画出坦克中间圆形
-                g.drawLine(x + 10, y + 15, x + 10, y + 30);// 画出坦克中间线条
+                g.fill3DRect(x, y, 10, 60, false);
+                g.fill3DRect(x + 30, y, 10, 60, false);
+                g.fill3DRect(x + 10, y + 10, 20, 40, false);
+                g.fillOval(x + 10, y + 20, 20, 20);
+                g.drawLine(x + 20, y + 30, x + 20, y + 60);
             }
             case 3 -> {
-                g.fill3DRect(x, y, 30, 5, false);// 画出坦克左边轮子
-                g.fill3DRect(x, y + 15, 30, 5, false);// 画出坦克右边轮子
-                g.fill3DRect(x + 5, y + 5, 20, 10, false);// 画出坦克中间矩形
-                g.fillOval(x + 10, y + 5, 10, 10);// 画出坦克中间圆形
-                g.drawLine(x + 15, y + 10, x, y + 10);// 画出坦克中间线条
+                g.fill3DRect(x, y, 60, 10, false);
+                g.fill3DRect(x, y + 30, 60, 10, false);
+                g.fill3DRect(x + 10, y + 10, 40, 20, false);
+                g.fillOval(x + 20, y + 10, 20, 20);
+                g.drawLine(x + 30, y + 20, x, y + 20);
             }
         }
 
@@ -113,11 +116,28 @@ public class myPanel extends JPanel implements KeyListener {
             hero.setDirect(3);
             hero.moveLeft();
         }
-        this.repaint();
+
+        //按下空格键，发射子弹
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            System.out.println(hero.getX() + " " + hero.getY());
+            hero.shotEnemy();
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            this.repaint();
+        }
     }
 }
