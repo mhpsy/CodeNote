@@ -1,4 +1,4 @@
-package top.mhpsy.Thread_;
+package top.mhpsy.IO_.Thread_;
 
 public class Thread02 {
     public static void main(String[] args) {
